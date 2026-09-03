@@ -96,31 +96,42 @@ except Exception as e:
     st.error(f"Error running prediction: {e}")
 
 import numpy as np
+import pandas as pd
 import os
 
 st.subheader("🔮 Forecast Result")
 
 try:
-    selected_day = st.session_state.get('test_day_index', 14)
+    # Get values from your active sidebar sliders
+    selected_day = st.session_state.get('test_day_index', 24)
     threshold = st.session_state.get('threshold', 0.55)
 
-    # Check if your test data file exists in your repository (e.g., X_test.npy)
+    # Load test data if available, otherwise use fallback shape
     if os.path.exists("X_test.npy"):
         X_test = np.load("X_test.npy")
         current_input = X_test[selected_day : selected_day + 1]
+        total_samples = len(X_test)
     else:
-        # Fallback sample window if the file isn't uploaded yet
         current_input = np.random.rand(1, 7, 6).astype(np.float32)
+        total_samples = 600  # fallback assumption for your timeline length
 
-    # Run prediction for the selected index/date
+    # Generate a date timeline from 2014 to 2020 matching your dataset length
+    date_range = pd.date_range(start="2014-01-01", end="2020-12-31", periods=total_samples)
+    current_date = date_range[selected_day].strftime("%Y-%m-%d") if selected_day < len(date_range) else "2014-01-01"
+
+    # Run model prediction
     prediction = model.predict(current_input)[0][0]
     
-    st.metric(label=f"Predicted Flood Risk Index (Index #{selected_day})", value=f"{prediction:.4f}")
+    # Display results showing both the Index and the calendar Date
+    st.metric(
+        label=f"Forecast for Date: {current_date} (Index #{selected_day})", 
+        value=f"{prediction:.4f}"
+    )
     
     if prediction >= threshold:
-        st.error(f"🚨 **WARNING: Flood Risk Detected!** (Risk index {prediction:.2f} is above threshold {threshold})")
+        st.error(f"🚨 **WARNING: Flood Risk Detected!** (Risk index {prediction:.2f} is above your threshold of {threshold})")
     else:
-        st.success(f"✅ **Safe: No Flood Risk.** (Risk index {prediction:.2f} is below threshold {threshold})")
+        st.success(f"✅ **Safe: No Flood Risk.** (Risk index {prediction:.2f} is below your threshold of {threshold})")
 
 except Exception as e:
     st.error(f"Error running prediction: {e}")
