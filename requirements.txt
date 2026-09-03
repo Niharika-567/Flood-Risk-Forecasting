@@ -1,6 +1,5 @@
 streamlit
-tensorflow-core-cpp==2.15.0.0; sys_platform != 'darwin'
-tensorflow==2.15.0
+tensorflow>=2.18.0
 pandas
 numpy
 scikit-learn
