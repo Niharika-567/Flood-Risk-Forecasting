@@ -2,7 +2,7 @@
 
 An end-to-end deep learning web application that predicts hydrological flood risks using historical time-series data and an LSTM neural network. 
 
-🔗 **Live App:** [View Live Streamlit Dashboard](flood-risk-forecasting-htktg6vwynyt6zcsgbkh6y)
+🔗 **Live App:** [View Live Streamlit Dashboard](https://flood-risk-forecasting-htktg6vwynyt6zcsgbkh6y.streamlit.app)
 
 ---
 
