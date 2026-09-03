@@ -94,3 +94,33 @@ try:
 
 except Exception as e:
     st.error(f"Error running prediction: {e}")
+
+import numpy as np
+import os
+
+st.subheader("🔮 Forecast Result")
+
+try:
+    selected_day = st.session_state.get('test_day_index', 14)
+    threshold = st.session_state.get('threshold', 0.55)
+
+    # Check if your test data file exists in your repository (e.g., X_test.npy)
+    if os.path.exists("X_test.npy"):
+        X_test = np.load("X_test.npy")
+        current_input = X_test[selected_day : selected_day + 1]
+    else:
+        # Fallback sample window if the file isn't uploaded yet
+        current_input = np.random.rand(1, 7, 6).astype(np.float32)
+
+    # Run prediction for the selected index/date
+    prediction = model.predict(current_input)[0][0]
+    
+    st.metric(label=f"Predicted Flood Risk Index (Index #{selected_day})", value=f"{prediction:.4f}")
+    
+    if prediction >= threshold:
+        st.error(f"🚨 **WARNING: Flood Risk Detected!** (Risk index {prediction:.2f} is above threshold {threshold})")
+    else:
+        st.success(f"✅ **Safe: No Flood Risk.** (Risk index {prediction:.2f} is below threshold {threshold})")
+
+except Exception as e:
+    st.error(f"Error running prediction: {e}")
