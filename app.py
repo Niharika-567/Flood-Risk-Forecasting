@@ -32,7 +32,7 @@ else:
 
     # Sidebar Controls for Simulation / Testing
     st.sidebar.header("⚙️ Simulation Controls")
-    test_index = st.sidebar.slider("Select Test Day Index", min_value=0, max_value=50, value=7)
+    test_index = st.sidebar.slider("Select Test Day Index", min_value=0, max_value=700, value=24)
     threshold = st.sidebar.slider("Flood Warning Threshold", min_value=0.0, max_value=1.0, value=0.5, step=0.05)
 
     st.markdown("### 📊 Live Risk Analysis Panel")
