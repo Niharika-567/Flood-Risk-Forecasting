@@ -47,3 +47,23 @@ else:
         st.metric(label="Model Status", value="Active / Operational", delta="LSTM")
 
     st.info("💡 **Next Steps:** You can customize this dashboard further to load your test datasets and plot actual vs predicted water levels right here!")
+
+# Add this near the bottom of your app.py to display the prediction result
+st.subheader("🔮 Forecast Result")
+
+# Assuming you have test data loaded (e.g., X_test, y_test)
+# Let's write out the logic based on your slider inputs:
+selected_day = st.session_state.get('test_day_index', 37) # or however you grab your slider value
+threshold = st.session_state.get('threshold', 0.80)
+
+# Dummy or actual prediction logic check:
+# prediction = model.predict(X_test[selected_day:selected_day+1])[0][0]
+
+# For now, let's display a styled metric box based on your threshold:
+st.metric(label="Predicted Flood Risk Index", value="--") # Replace with your model's prediction value
+
+# Show warning message
+# if prediction >= threshold:
+#     st.error("🚨 WARNING: High Flood Risk Detected!")
+# else:
+#     st.success("✅ Safe: No Flood Risk Expected.")
